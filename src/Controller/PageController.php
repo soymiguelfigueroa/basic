@@ -23,4 +23,12 @@ class PageController extends AbstractController
             'title' => 'About Us'
         ]);
     }
+
+    #[Route('/item', name: 'item')]
+    public function item(): Response
+    {
+        return $this->render('pages/item.html.twig', [
+            'title' => 'Item Page',
+        ]);
+    }
 }
