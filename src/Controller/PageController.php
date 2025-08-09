@@ -14,7 +14,7 @@ class PageController extends AbstractController
         SnippetRepository $snippetRepository
     ): Response
     {
-        $snippets = $snippetRepository->findAll();
+        $snippets = $snippetRepository->getSnippets();
 
         return $this->render('pages/index.html.twig', [
             'title' => 'Home Page',
@@ -36,7 +36,7 @@ class PageController extends AbstractController
         SnippetRepository $snippetRepository
     ): Response
     {
-        $snippet = $snippetRepository->find($id);
+        $snippet = $snippetRepository->getSnippet($id);
 
         if (!$snippet) {
             throw $this->createNotFoundException('Snippet not found');

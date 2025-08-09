@@ -16,6 +16,28 @@ class SnippetRepository extends ServiceEntityRepository
         parent::__construct($registry, Snippet::class);
     }
 
+    public function getSnippets(): array
+    {
+        $qb = $this->createQueryBuilder('snippet')
+            ->leftJoin('snippet.comments', 'comments')->addSelect('comments')
+            ->leftJoin('snippet.author', 'author')->addSelect('author')
+            ->orderBy('snippet.id', 'DESC');
+        
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getSnippet(int $id): Snippet
+    {
+        $qb = $this->createQueryBuilder('snippet')
+            ->where("snippet.id = $id")
+            ->leftJoin('snippet.comments', 'comments')->addSelect('comments')
+            ->leftJoin('snippet.author', 'author')->addSelect('author')
+            ->leftJoin('comments.author', 'comment_author')->addSelect('comment_author')
+            ->orderBy('comments.id', 'DESC');
+
+        return $qb->getQuery()->getSingleResult();
+    }
+
     //    /**
     //     * @return Snippet[] Returns an array of Snippet objects
     //     */
