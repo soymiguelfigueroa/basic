@@ -40,5 +40,23 @@
 				</div>
 			</div>
 		{% endfor %}
+
+		{% if snippets.haveToPaginate %}
+			<div class="flex justify-between items-center">
+				<div>
+					Página {{ snippets.currentPage }} de {{ snippets.nbPages }}
+				</div>
+
+				<div class="flex gap-4 justify-end">
+					{% if snippets.hasPreviousPage %}
+						<a href="{{ path('home', {page: snippets.getPreviousPage}) }}">Anterior</a>
+					{% endif %}
+					
+					{% if snippets.hasNextPage %}
+						<a href="{{ path('home', {page: snippets.getNextPage}) }}">Siguiente</a>
+					{% endif %}
+				</div>
+			</div>
+		{% endif %}
 	</div>
 {% endblock %}
