@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Snippet;
 use App\Repository\SnippetRepository;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,18 +36,12 @@ class PageController extends AbstractController
         ]);
     }
 
-    #[Route('/item/{id}', name: 'item')]
+    #[Route('/item/{slug}', name: 'item')]
     public function item(
-        int $id,
-        SnippetRepository $snippetRepository
+        #[MapEntity(mapping: ['slug' => 'slug'])]
+        Snippet $snippet
     ): Response
     {
-        $snippet = $snippetRepository->getSnippet($id);
-
-        if (!$snippet) {
-            throw $this->createNotFoundException('Snippet not found');
-        }
-        
         return $this->render('pages/item.html.twig', [
             'title' => $snippet->getTitle(),
             'snippet' => $snippet

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Slug;
 
 #[ORM\Entity(repositoryClass: SnippetRepository::class)]
 class Snippet
@@ -43,6 +44,10 @@ class Snippet
      */
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'snippet', orphanRemoval: true)]
     private Collection $comments;
+
+    #[ORM\Column(length: 255)]
+    #[Slug(fields: ['title'])]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -171,6 +176,18 @@ class Snippet
                 $comment->setSnippet(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }
