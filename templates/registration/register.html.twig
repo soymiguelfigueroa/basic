@@ -1,22 +1,48 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Crea tu cuenta{% endblock %}
 
 {% block body %}
-    <h1 class="text-center mb-4 ">Register</h1>
+    <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-2xl font-semibold sm:text-5xl">Crea tu cuenta</h2>
+        <p class="mt-2 text-lg text-gray-600">
+            Si ya tienes una cuenta, puedes <a href="{{ path('app_login') }}" class="text-indigo-600 hover:text-indigo-500">iniciar sesión</a>.
+        </p>
+    </div>
 
-    {{ form_errors(registrationForm) }}
+    <div class="mx-auto mt-16 max-w-xl sm:mt-20">
+        {{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.name, {
-            label: 'Full Name'
-        }) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.name, {
+                label: 'Nombre',
+                attr: { class: 'block w-full rounded-md bg-white px-4 py-2 text-gray-900' },
+                row_attr: { class: 'mb-4' },
+                label_attr: { class: 'block text-sm font-semibold mb-1' },
+            }) }}
 
-        <button type="submit" class="p-2 rounded border-gray-300 shadow-sm sm:text-sm dark:border-stone-50 dark:bg-stone-200 dark:text-gray-600">Register</button>
-    {{ form_end(registrationForm) }}
+            {{ form_row(registrationForm.email, {
+                label: 'Email',
+                attr: { class: 'block w-full rounded-md bg-white px-4 py-2 text-gray-900' },
+                row_attr: { class: 'mb-4' },
+                label_attr: { class: 'block text-sm font-semibold mb-1' },
+            }) }}
+
+            {{ form_row(registrationForm.plainPassword, {
+                label: 'Password',
+                attr: { class: 'block w-full rounded-md bg-white px-4 py-2 text-gray-900' },
+                row_attr: { class: 'mb-4' },
+                label_attr: { class: 'block text-sm font-semibold mb-1' },
+            }) }}
+
+            {{ form_row(registrationForm.agreeTerms, {
+                label: 'Acepto los términos y condiciones',
+                attr: { class: 'block text-xs font-semibold' },
+            }) }}
+
+            <div class="mt-10">
+                <button type="submit" class="block w-full rounded-md bg-indigo-600 px-4 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500">Registrarse</button>
+            </div>
+        {{ form_end(registrationForm) }}        
+    </div>
 {% endblock %}
