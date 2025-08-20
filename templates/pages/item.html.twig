@@ -12,8 +12,22 @@
 			</h4>
 
 			<p class="text-xs text-gray-400 mb-8">
-				{{ snippet.title }}
+				{{ snippet.description }}
 			</p>
+
+			{% if app.user %}
+				<div class="mb-8 flex items-center gap-2">
+					<form action="{{ path('app_snippet_fork', { id: snippet.id }) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres hacer un fork de este snippet?');">
+						<button type="submit" class="rounded-2xl py-1 px-4 bg-green-800 text-xs text-white">
+							Fork
+						</button>
+					</form>
+
+					<!-- if -->
+
+					<!-- endif -->
+				</div>
+			{% endif %}
 
 			<div>
 				<p class="text-gray-400 text-xs">Usuario</p>

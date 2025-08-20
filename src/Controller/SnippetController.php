@@ -46,4 +46,24 @@ final class SnippetController extends AbstractController
             'data' => $formData->all(),
         ]);
     }
+
+    #[Route('/snippet/{id}/fork', name: 'app_snippet_fork', methods: ['POST'])]
+    public function forkSnippet(
+        #[CurrentUser] User $user,
+        EntityManagerInterface $entityManager,
+        Snippet $snippet
+    ): Response
+    {
+        $fork = (new Snippet())
+            ->setAuthor($user)
+            ->setTitle($snippet->getTitle() . ' (Fork)')
+            ->setDescription($snippet->getDescription())
+            ->setCode($snippet->getCode())
+            ->setParent($snippet);
+
+        $entityManager->persist($fork);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('item', ['slug' => $fork->getSlug()]);
+    }
 }
