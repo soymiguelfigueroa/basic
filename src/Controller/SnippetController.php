@@ -66,4 +66,40 @@ final class SnippetController extends AbstractController
 
         return $this->redirectToRoute('item', ['slug' => $fork->getSlug()]);
     }
+
+    #[Route('/snippet/{id}/edit', name: 'app_snippet_edit', methods: ['GET', 'POST'])]
+    public function editSnippet(
+        #[CurrentUser] User $user,
+        EntityManagerInterface $entityManager,
+        Snippet $snippet,
+        ValidatorInterface $validator,
+        Request $request
+    )
+    {
+        if ($snippet->getAuthor() !== $user) {
+            throw $this->createAccessDeniedException('You do not have permission to edit this snippet.');
+        }
+
+        $formData = $request->request;
+
+        if ($request->isMethod('POST')) {
+            $snippet->setTitle($formData->get('title'))
+                ->setDescription($formData->get('description'))
+                ->setCode($formData->get('code'));
+
+            $errors = $validator->validate($snippet);
+
+            if (!$errors->count()) {
+                $entityManager->flush();
+
+                return $this->redirectToRoute('item', ['slug' => $snippet->getSlug()]);
+            }
+        }
+
+        return $this->render('snippet/edit.html.twig', [
+            'snippet' => $snippet,
+            'errors' => $errors ?? [],
+            'data' => $formData->all(),
+        ]);
+    }
 }
